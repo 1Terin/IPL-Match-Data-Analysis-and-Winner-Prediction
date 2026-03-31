@@ -82,6 +82,13 @@ if selected_season != "All":
     filtered = filtered[filtered['season'] == selected_season]
 
 # -------------------------------
+# 🔥 ADDED FIX: FILTER DELIVERIES
+# -------------------------------
+filtered_deliveries = deliveries[
+    deliveries['match_id'].isin(filtered['id'])
+]
+
+# -------------------------------
 # KPI CARDS
 # -------------------------------
 col1, col2, col3 = st.columns(3)
@@ -147,7 +154,9 @@ elif page == "Team Analysis":
         st.markdown('<div class="card">', unsafe_allow_html=True)
         st.markdown('<div class="card-title">Correlation Heatmap</div>', unsafe_allow_html=True)
 
-        corr = matches.corr(numeric_only=True)
+        # 🔥 FIXED (uses filtered)
+        corr = filtered.corr(numeric_only=True)
+
         fig, ax = plt.subplots(figsize=(5,3))
         sns.heatmap(corr, annot=True, ax=ax)
         st.pyplot(fig)
@@ -159,7 +168,8 @@ elif page == "Team Analysis":
 # ===============================
 elif page == "Player Analysis":
 
-    player_stats = deliveries.groupby('batter').agg({
+    # 🔥 FIXED (uses filtered_deliveries)
+    player_stats = filtered_deliveries.groupby('batter').agg({
         'batsman_runs': 'sum',
         'ball': 'count'
     })
@@ -171,7 +181,8 @@ elif page == "Player Analysis":
         st.markdown('<div class="card">', unsafe_allow_html=True)
         st.markdown('<div class="card-title">Top Batsmen</div>', unsafe_allow_html=True)
 
-        top_batsmen = deliveries.groupby('batter')['batsman_runs'] \
+        # 🔥 FIXED
+        top_batsmen = filtered_deliveries.groupby('batter')['batsman_runs'] \
             .sum().sort_values(ascending=False).head(10)
 
         fig, ax = plt.subplots(figsize=(5,3))
@@ -200,7 +211,9 @@ elif page == "Player Analysis":
         st.markdown('<div class="card">', unsafe_allow_html=True)
         st.markdown('<div class="card-title">Runs Distribution</div>', unsafe_allow_html=True)
 
-        total_runs = deliveries.groupby('match_id')['total_runs'].sum()
+        # 🔥 FIXED
+        total_runs = filtered_deliveries.groupby('match_id')['total_runs'].sum()
+
         fig, ax = plt.subplots(figsize=(5,3))
         sns.boxplot(x=total_runs, ax=ax)
         st.pyplot(fig)
