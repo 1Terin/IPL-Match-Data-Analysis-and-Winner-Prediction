@@ -60,7 +60,7 @@ page = st.sidebar.radio("Go to", ["Overview", "Team Analysis", "Player Analysis"
 # -------------------------------
 # FILTERS
 # -------------------------------
-st.subheader("🔍 Filters")
+st.subheader("FILTERS")
 
 col1, col2 = st.columns(2)
 
@@ -111,7 +111,7 @@ if page == "Overview":
 
         fig, ax = plt.subplots(figsize=(5,3))
         sns.countplot(x='winner', data=filtered, ax=ax)
-        plt.xticks(rotation=45)
+        plt.xticks(rotation=90)
         st.pyplot(fig)
 
         st.markdown('</div>', unsafe_allow_html=True)
@@ -144,7 +144,7 @@ elif page == "Team Analysis":
 
         fig, ax = plt.subplots(figsize=(5,3))
         sns.countplot(x='city', data=filtered, ax=ax)
-        plt.xticks(rotation=45)
+        plt.xticks(rotation=90)
         st.pyplot(fig)
 
         st.markdown('</div>', unsafe_allow_html=True)
@@ -187,7 +187,7 @@ elif page == "Player Analysis":
 
         fig, ax = plt.subplots(figsize=(5,3))
         top_batsmen.plot(kind='bar', ax=ax)
-        plt.xticks(rotation=45)
+        plt.xticks(rotation=90)
         st.pyplot(fig)
 
         st.markdown('</div>', unsafe_allow_html=True)
